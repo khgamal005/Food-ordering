@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ReduxProvider from "@/providers/ReduxProvider";
+import { Directions, Languages } from "@/constants/enums";
 
 
 
