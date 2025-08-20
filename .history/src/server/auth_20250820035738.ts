@@ -6,7 +6,6 @@ import { Locale } from "@/i18n.config";
 import { User, UserRole } from "@prisma/client";
 import { JWT } from "next-auth/jwt";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { login } from "./_actions/auth";
 
 
 declare module "next-auth" {
@@ -46,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials, req) => {
         const currentUrl = req?.headers?.referer;
         const locale = currentUrl?.split("/")[3] as Locale;
-        const res = await login(credentials, locale);
+        const res = await logi(credentials, locale);
         if (res.status === 200 && res.user) {
           return res.user;
         } else {

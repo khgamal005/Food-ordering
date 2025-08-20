@@ -6,7 +6,6 @@ import { Locale } from "@/i18n.config";
 import { User, UserRole } from "@prisma/client";
 import { JWT } from "next-auth/jwt";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { login } from "./_actions/auth";
 
 
 declare module "next-auth" {
