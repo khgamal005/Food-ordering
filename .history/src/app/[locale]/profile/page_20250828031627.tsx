@@ -13,7 +13,7 @@ async function ProfilePage({
   params: { locale: Locale };
 }) {
   const session = await getServerSession(authOptions);
-  const { locale } =  params;
+  const { locale } = await params;
   const translations = await getTrans(locale);
 
   if (!session) {

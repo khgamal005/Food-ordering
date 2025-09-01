@@ -10,10 +10,10 @@ import { redirect } from "next/navigation";
 async function ProfilePage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
   const session = await getServerSession(authOptions);
-  const { locale } =  params;
+  const { locale } = await params;
   const translations = await getTrans(locale);
 
   if (!session) {

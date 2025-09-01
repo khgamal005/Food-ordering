@@ -60,8 +60,9 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
       return {
-        ...token,
         id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
         role: dbUser.role,
         image: dbUser.image,
         city: dbUser.city,

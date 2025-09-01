@@ -7,28 +7,22 @@ import { UserRole } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-async function ProfilePage({
-  params,
-}: {
-  params: { locale: Locale };
-}) {
-  const session = await getServerSession(authOptions);
-  const { locale } =  params;
+async function AdminPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   const translations = await getTrans(locale);
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect(`/${locale}/${Routes.AUTH}/${Pages.LOGIN}`);
   }
-  if (session && session.user.role === UserRole.ADMIN) {
-    redirect(`/${locale}/${Routes.ADMIN}`);
+
+  if (session && session.user.role !== UserRole.ADMIN) {
+    redirect(`/${locale}/${Routes.PROFILE}`);
   }
   return (
     <main>
       <section className="section-gap">
         <div className="container">
-          <h1 className="text-primary text-center font-bold text-4xl italic mb-10">
-            {translations.profile.title}
-          </h1>
           <EditUserForm user={session?.user} translations={translations} />
         </div>
       </section>
@@ -36,4 +30,4 @@ async function ProfilePage({
   );
 }
 
-export default ProfilePage;
+export default AdminPage;

@@ -20,7 +20,7 @@ export const updateProfile = async (
 
   if (result.success === false) {
     return {
-      error: result.error.flatten().fieldErrors,
+      error: result.error.formErrors.fieldErrors,
       formData,
     };
   }
@@ -79,7 +79,7 @@ const getImageUrl = async (imageFile: File) => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/upload`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
       {
         method: "POST",
         body: formData,

@@ -86,6 +86,7 @@ const getImageUrl = async (imageFile: File) => {
       }
     );
     const image = (await response.json()) as { url: string };
+    console.log("Uploaded image URL:", image.url);
     return image.url;
   } catch (error) {
     console.error("Error uploading file to Cloudinary:", error);

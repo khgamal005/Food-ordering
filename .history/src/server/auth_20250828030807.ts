@@ -60,15 +60,18 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
       return {
-        ...token,
-        id: dbUser.id,
-        role: dbUser.role,
-        image: dbUser.image,
-        city: dbUser.city,
-        country: dbUser.country,
-        phone: dbUser.phone,
-        postalCode: dbUser.postalCode,
-        streetAddress: dbUser.streetAddress,
+       return {
+    ...token,
+    id: dbUser.id,
+    role: dbUser.role,
+    image: dbUser.image,
+    city: dbUser.city,
+    country: dbUser.country,
+    phone: dbUser.phone,
+    postalCode: dbUser.postalCode,
+    streetAddress: dbUser.streetAddress,
+  };
+},
       };
     },
   },
