@@ -11,7 +11,7 @@ import { selectCartItems, clearCart } from '@/redux/features/cart/cartSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { useAppDispatch } from '@/redux/hooks';
 import axios from 'axios';
-import { createOrder } from '@/redux/features/order/orderlice'
+import { createOrder } from '@/redux/features/order/orderSlice'
 
 function CheckoutForm() {
   const cart = useAppSelector(selectCartItems);
