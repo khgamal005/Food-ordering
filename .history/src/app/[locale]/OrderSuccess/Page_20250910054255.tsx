@@ -1,38 +1,30 @@
-'use client';
+// 'use client';
 
-import { FC, useEffect } from 'react';
-import Lottie from 'lottie-react';
-import animationData from '@/assets/animations/107043-success.json';
-import { useAppDispatch } from '@/redux/hooks';
-import { clearCart } from '@/redux/features/cart/cartSlice';
+// import { FC } from 'react';
+// import Lottie from 'lottie-react';
+// import animationData from '@/assets/animations/107043-success.json';
 
-const Success: FC = () => {
-  const dispatch = useAppDispatch();
+// const Success: FC = () => {
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+//       <Lottie
+//         animationData={animationData}
+//         loop={false}
+//         autoplay
+//         style={{ width: 300, height: 300 }}
+//       />
+//       <h5 className="text-center mt-4 text-2xl text-gray-700">
+//         Your order is successful 😍
+//       </h5>
+//     </div>
+//   );
+// };
 
-  useEffect(() => {
-    dispatch(clearCart());
-  }, [dispatch]);
+// const OrderSuccessPage: FC = () => {
+//   return <Success />;
+// };
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-      <Lottie
-        animationData={animationData}
-        loop={false}
-        autoplay
-        style={{ width: 300, height: 300 }}
-      />
-      <h5 className="text-center mt-4 text-2xl text-gray-700">
-        Your order is successful 😍
-      </h5>
-    </div>
-  );
-};
-
-const OrderSuccessPage: FC = () => {
-  return <Success />;
-};
-
-export default OrderSuccessPage;
+// export default OrderSuccessPage;
 // 'use client';
 
 // import { useEffect } from 'react';

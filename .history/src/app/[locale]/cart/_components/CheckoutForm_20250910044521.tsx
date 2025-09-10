@@ -63,8 +63,7 @@ function CheckoutForm() {
           router.push('/ordersuccess'); // ✅ redirect
         }
       } else if (selectedPaymentMethod === 'stripe') {
-        localStorage.setItem('pendingOrder', JSON.stringify({ cart, formData: formDataObj }));
-
+        
         // Stripe
         const res = await axios.post('/api/checkout_sessions', {
           cart,

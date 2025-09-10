@@ -1,18 +1,14 @@
 'use client';
 
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Lottie from 'lottie-react';
 import animationData from '@/assets/animations/107043-success.json';
-import { useAppDispatch } from '@/redux/hooks';
-import { clearCart } from '@/redux/features/cart/cartSlice';
 
 const Success: FC = () => {
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(clearCart());
-  }, [dispatch]);
-
+  dispatch(clearCart());
+}, [dispatch])
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <Lottie
