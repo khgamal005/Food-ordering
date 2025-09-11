@@ -30,11 +30,11 @@ event = stripe.webhooks.constructEvent(
   process.env.STRIPE_WEBHOOK_SECRET!,
   600 // 10 minutes tolerance instead of default 300
 );
-  } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    console.error("❌ Webhook signature verification failed:", errorMessage);
+    console.log(`✅ Webhook verified: ${event.type}`);
+  } catch (err: any) {
+    console.error("❌ Webhook signature verification failed:", err.message);
     return NextResponse.json(
-      { error: `Webhook signature verification failed: ${errorMessage}` }, 
+      { error: `Webhook signature verification failed: ${err.message}` }, 
       { status: 400 }
     );
   }
@@ -58,7 +58,7 @@ event = stripe.webhooks.constructEvent(
         console.log(`🔄 Updating order status for order: ${orderId}`);
         
         // Update order status in database
-         await db.order.update({
+        const updatedOrder = await db.order.update({
           where: { id: orderId },
           data: { 
             paid: true,

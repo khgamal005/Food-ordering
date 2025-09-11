@@ -64,7 +64,6 @@
 //   }
 // }
 
-import { deliveryFee, getSubTotal } from "@/lib/cart";
 import { db } from "@/lib/prisma";
 import type { CartItem } from "@/redux/features/cart/cartSlice";
 import Stripe from "stripe";
@@ -73,6 +72,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
 });
 
+export async function POST(req: Request) {
 export async function POST(req: Request) {
   const { cart, formData } = await req.json();
 
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
       city: formData.city,
       country: formData.country,
       products: {
-        create: cart.map((item: CartItem) => ({
+        create: cart.map((item: any) => ({
           productId: item.id,
           quantity: item.quantity,
         })),

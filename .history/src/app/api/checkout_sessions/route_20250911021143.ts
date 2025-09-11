@@ -95,7 +95,7 @@ export async function POST(req: Request) {
       city: formData.city,
       country: formData.country,
       products: {
-        create: cart.map((item: CartItem) => ({
+        create: cart.map((item: any) => ({
           productId: item.id,
           quantity: item.quantity,
         })),

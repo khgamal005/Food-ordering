@@ -64,8 +64,6 @@
 //   }
 // }
 
-import { deliveryFee, getSubTotal } from "@/lib/cart";
-import { db } from "@/lib/prisma";
 import type { CartItem } from "@/redux/features/cart/cartSlice";
 import Stripe from "stripe";
 
@@ -76,32 +74,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
   const { cart, formData } = await req.json();
 
-  // 1️⃣ Calculate totals safely on server
-  const subTotal = getSubTotal(cart);
-  const totalPrice = subTotal + deliveryFee;
-
-  // 2️⃣ Create pending order in DB
-  const order = await db.order.create({
-    data: {
-      status: "pending",
-      paid: false,
-      subTotal,
-      deliveryFee,
-      totalPrice,
-      userEmail: formData.userEmail,
-      phone: formData.phone,
-      streetAddress: formData.streetAddress,
-      postalCode: formData.postalCode,
-      city: formData.city,
-      country: formData.country,
-      products: {
-        create: cart.map((item: CartItem) => ({
-          productId: item.id,
-          quantity: item.quantity,
-        })),
-      },
-    },
-  });
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
@@ -124,8 +96,12 @@ export async function POST(req: Request) {
     cancel_url: `${process.env.NEXTAUTH_URL}/cart`,
     // ✅ Save full cart + form data to metadata for later webhook use
     metadata: {
-      orderId: order.id, // 🔑 so webhook knows which order to update
-
+      phone: formData.phone,
+      streetAddress: formData.streetAddress,
+      city: formData.city,
+      country: formData.country,
+      postalCode: formData.postalCode,
+      cart: JSON.stringify(cart), // useful in webhook
     },
   });
 

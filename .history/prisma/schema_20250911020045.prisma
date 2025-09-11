@@ -70,6 +70,7 @@ model Order {
   id     String  @id @default(uuid())
   paid   Boolean @default(false)
   status String  @default("pending") // "pending" | "paid" | "failed"
+
   subTotal      Float
   deliveryFee   Float
   totalPrice    Float

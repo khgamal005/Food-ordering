@@ -67,13 +67,14 @@ model Category {
 }
 
 model Order {
-  id     String  @id @default(uuid())
-  paid   Boolean @default(false)
-  status String  @default("pending") // "pending" | "paid" | "failed"
+  id            String         @id @default(uuid())
+  paid          Boolean        @default(false)
+    status        String         @default("pending") // "pending" | "paid" | "failed"
+
   subTotal      Float
   deliveryFee   Float
   totalPrice    Float
-  userEmail     String? // <-- make optional
+  userEmail     String?        // <-- make optional
   phone         String
   streetAddress String
   postalCode    String

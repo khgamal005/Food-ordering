@@ -24,17 +24,16 @@ export async function POST(req: Request) {
   
   try {
     // Verify webhook signature
-event = stripe.webhooks.constructEvent(
-  body,
-  sig,
-  process.env.STRIPE_WEBHOOK_SECRET!,
-  600 // 10 minutes tolerance instead of default 300
-);
-  } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    console.error("❌ Webhook signature verification failed:", errorMessage);
+    event = stripe.webhooks.constructEvent(
+      body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+    console.log(`✅ Webhook verified: ${event.type}`);
+  } catch (err: any) {
+    console.error("❌ Webhook signature verification failed:", err.message);
     return NextResponse.json(
-      { error: `Webhook signature verification failed: ${errorMessage}` }, 
+      { error: `Webhook signature verification failed: ${err.message}` }, 
       { status: 400 }
     );
   }
@@ -58,13 +57,13 @@ event = stripe.webhooks.constructEvent(
         console.log(`🔄 Updating order status for order: ${orderId}`);
         
         // Update order status in database
-         await db.order.update({
+        const updatedOrder = await db.order.update({
           where: { id: orderId },
           data: { 
             paid: true,
             status: "processing", // Consider adding a status field if you don't have one
             // You might want to store the Stripe payment intent ID for reference
-            // stripePaymentId: session.payment_intent as string
+            stripePaymentId: session.payment_intent as string
           },
         });
         
