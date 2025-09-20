@@ -123,8 +123,7 @@ export async function POST(req: Request) {
         postalCode: formData.postalCode || "",
         city: formData.city,
         country: formData.country,
-        products: {
-          create: cart.map((item: CartItem) => ({
+        products: {: cart.map((item: CartItem) => ({
             productId: item.id,
             quantity: item.quantity,
           })),
