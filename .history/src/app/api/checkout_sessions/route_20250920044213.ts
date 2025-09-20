@@ -70,7 +70,7 @@ import type { CartItem } from "@/redux/features/cart/cartSlice";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-08-27.basil", // match your types
+  apiVersion: "2024-06-20" as any, // bypass TS literal type check
 });
 
 export async function POST(req: Request) {
