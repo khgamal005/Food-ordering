@@ -24,6 +24,7 @@ export const updateProfile = async (
       formData,
     };
   }
+  
   const data = result.data;
   const imageFile = data.image as File;
   const imageUrl = Boolean(imageFile.size)
@@ -36,6 +37,7 @@ export const updateProfile = async (
         email: data.email,
       },
     });
+    
     if (!user) {
       return {
         message: translations.messages.userNotFound,
@@ -43,25 +45,38 @@ export const updateProfile = async (
         formData,
       };
     }
-await db.user.update({
-  where: {
-    email: user.email!, // ✅ tells TS it's not null
-  },
-  data: {
-    ...data,
-    image: imageUrl ?? user.image ?? undefined, // Convert null to undefined
-    role: isAdmin ? UserRole.ADMIN : UserRole.USER,
-  },
-});
+
+    // Prepare update data, converting null values to undefined
+    const updateData: any = {
+      ...data,
+      image: (imageUrl ?? user.image) ?? undefined, // Convert null to undefined
+      role: isAdmin ? UserRole.ADMIN : UserRole.USER,
+    };
+
+    // Remove any null values from the update data
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === null) {
+        updateData[key] = undefined;
+      }
+    });
+
+    await db.user.update({
+      where: {
+        email: user.email,
+      },
+      data: updateData,
+    });
+    
     revalidatePath(`/${locale}/${Routes.PROFILE}`);
     revalidatePath(`/${locale}/${Routes.ADMIN}`);
     revalidatePath(`/${locale}/${Routes.ADMIN}/${Pages.USERS}`);
     revalidatePath(
       `/${locale}/${Routes.ADMIN}/${Pages.USERS}/${user.id}/${Pages.EDIT}`
     );
+    
     return {
       status: 200,
-      message: translations.messages.updateProfileSucess,
+      message: translations.messages.updateProfileSuccess,
     };
   } catch (error) {
     console.error(error);
@@ -89,5 +104,6 @@ const getImageUrl = async (imageFile: File) => {
     return image.url;
   } catch (error) {
     console.error("Error uploading file to Cloudinary:", error);
+    return null;
   }
 };

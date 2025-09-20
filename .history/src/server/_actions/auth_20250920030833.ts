@@ -31,6 +31,7 @@ export const login = async (
       return { message: translations.messages.userNotFound, status: 401 };
     }
     const hashedPassword = user.password;
+    
     const isValidPassword = await bcrypt.compare(
       result.data.password,
       hashedPassword
@@ -64,9 +65,19 @@ export const signup = async (prevState: unknown, formData: FormData) => {
     Object.fromEntries(formData.entries())
   );
   if (result.success === false) {
+    // 🔹 FIX: Proper Zod error handling
+    const fieldErrors: Record<string, string> = {};
+    
+    result.error.issues.forEach((error) => {
+      const fieldName = error.path[0] as string;
+      if (fieldName) {
+        fieldErrors[fieldName] = error.message;
+      }
+    });
+    
     return {
-      error: result.error.flatten().fieldErrors,
-      formData,
+      errors: fieldErrors,
+      user: null,
     };
   }
   try {

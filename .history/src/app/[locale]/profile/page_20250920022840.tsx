@@ -1,3 +1,5 @@
+// src/app/[locale]/profile/page.tsx
+
 import EditUserForm from "@/components/edit-user-form";
 import { Pages, Routes } from "@/constants/enums";
 import { Locale } from "@/i18n.config";
@@ -7,15 +9,12 @@ import { UserRole } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-interface ProfilePageProps {
-  params: Promise<{
-    locale: Locale;
-  }>;
-}
-
-export default async function ProfilePage({ params }: ProfilePageProps) {
-  // Await the params promise
-  const { locale } = await params;
+export default async function ProfilePage({
+  params,
+}: {
+  params: { locale: Locale };
+}) {
+  const { locale } = params;
 
   // Get session
   const session = await getServerSession(authOptions);

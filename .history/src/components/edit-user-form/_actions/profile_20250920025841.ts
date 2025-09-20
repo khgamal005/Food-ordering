@@ -45,11 +45,11 @@ export const updateProfile = async (
     }
 await db.user.update({
   where: {
-    email: user.email!, // ✅ tells TS it's not null
+    email: user.email,
   },
   data: {
     ...data,
-    image: imageUrl ?? user.image ?? undefined, // Convert null to undefined
+    image: (imageUrl ?? user.image) ?? undefined, // Converts null to undefined
     role: isAdmin ? UserRole.ADMIN : UserRole.USER,
   },
 });

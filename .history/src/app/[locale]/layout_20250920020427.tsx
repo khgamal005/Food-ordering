@@ -24,16 +24,14 @@ export async function generateStaticParams() {
   return [{ locale: Languages.ARABIC }, { locale: Languages.ENGLISH }];
 }
 
-interface RootLayoutProps {
+export default async function RootLayout({
+  children,
+  params,
+}: Readonly<{
   children: React.ReactNode;
-  params: Promise<{
-    locale: Locale;
-  }>;
-}
-
-export default async function RootLayout({ children, params }: RootLayoutProps) {
-  // Await the params promise
-  const { locale } = await params;
+params: { locale: Locale };
+}>) {
+  const { locale } = params;
 
   return (
     <html

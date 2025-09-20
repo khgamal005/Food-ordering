@@ -31,15 +31,10 @@ export const login = async (
       return { message: translations.messages.userNotFound, status: 401 };
     }
     const hashedPassword = user.password;
-
-if (!hashedPassword) {
-  throw new Error("User does not have a password set");
-}
-
-const isValidPassword = await bcrypt.compare(
-  result.data.password,
-  hashedPassword
-);
+    const isValidPassword = await bcrypt.compare(
+      result.data.password,
+      hashedPassword
+    );
     if (!isValidPassword) {
       return {
         message: translations.messages.incorrectPassword,

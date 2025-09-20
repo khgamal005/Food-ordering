@@ -74,7 +74,7 @@ function EditUserForm({
         {selectedImage && (
           <Image
             src={selectedImage}
-            alt={user.name ?? "User profile image"} // fallback if null
+            alt={user.name}
             width={200}
             height={200}
             className="rounded-full object-cover"

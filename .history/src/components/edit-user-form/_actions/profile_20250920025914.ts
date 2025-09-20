@@ -45,7 +45,7 @@ export const updateProfile = async (
     }
 await db.user.update({
   where: {
-    email: user.email!, // ✅ tells TS it's not null
+    email: user.email,
   },
   data: {
     ...data,
