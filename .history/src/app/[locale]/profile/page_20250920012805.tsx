@@ -1,5 +1,3 @@
-// src/app/[locale]/profile/page.tsx
-
 import EditUserForm from "@/components/edit-user-form";
 import { Pages, Routes } from "@/constants/enums";
 import { Locale } from "@/i18n.config";
@@ -9,32 +7,21 @@ import { UserRole } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-// ✅ Define props explicitly
-type ProfilePageProps = {
-  params: {
-    locale: Locale;
-  };
-};
-
-export default async function ProfilePage({ params }: ProfilePageProps) {
-  const { locale } = params;
-
-  // 🔐 Fetch session on server
+async function ProfilePage({
+  params,
+}: {
+  params: { locale: Locale };
+}) {
   const session = await getServerSession(authOptions);
-
-  // 🌍 Load translations
+  const { locale } =  params;
   const translations = await getTrans(locale);
 
-  // 🚦 Redirect logic
   if (!session) {
     redirect(`/${locale}/${Routes.AUTH}/${Pages.LOGIN}`);
   }
-
-  if (session.user.role === UserRole.ADMIN) {
+  if (session && session.user.role === UserRole.ADMIN) {
     redirect(`/${locale}/${Routes.ADMIN}`);
   }
-
-  // 🎨 Render profile page
   return (
     <main>
       <section className="section-gap">
@@ -42,9 +29,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <h1 className="text-primary text-center font-bold text-4xl italic mb-10">
             {translations.profile.title}
           </h1>
-          <EditUserForm user={session.user} translations={translations} />
+          <EditUserForm user={session?.user} translations={translations} />
         </div>
       </section>
     </main>
   );
 }
+
+export default ProfilePage;
